@@ -11,15 +11,14 @@ import subprocess
 chrome_options = Options()
 chrome_options.add_argument("--incognito")
 chrome_options.add_argument("--headless")
-chrome_options.binary_location = "/usr/bin/google-chrome"
+chrome_options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 driver = webdriver.Chrome(executable_path=os.path.abspath("chromedriver"), options=chrome_options)
 
 driver.get("https://ttp.cbp.dhs.gov/schedulerui/schedule-interview/location?lang=en&vo=true&service=UP")
 time.sleep(2)
 
 SFO = 'US34'
-BOS = 'US190'
-#ANC = 'US10' # anchorage usually has free slots, so this is a test that the script still works.
+# MIA = 'US10' # anchorage usually has free slots, so this is a test that the script still works.
 center_id_prefix = "centerDetails"
 
 def check_loc(loc):
@@ -45,12 +44,13 @@ def check_loc(loc):
 print('checking SFO')
 sfo = check_loc(SFO)
 print(sfo)
-print('checking BOS')
-bos = check_loc(BOS)
-print(bos)
 
-if sfo != None or bos != None:
+#print('checking MIA')
+#mia = check_loc(MIA)
+#print(mia)
+
+if sfo != None:
     print("sending email")
-    subprocess.run(f'echo "sfo: {sfo} bos: {bos}" | mutt -s "TTP Appointment" -- {sys.argv[1]}', shell=True)
+    # subprocess.run(f'echo "sfo: {sfo} bos: {bos}" | mutt -s "TTP Appointment" -- {sys.argv[1]}', shell=True)
 
 driver.quit()
